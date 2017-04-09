@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Set Configuration for Teamspeak in ts3server.ini
 # The following Lines will set the ts3server.ini
