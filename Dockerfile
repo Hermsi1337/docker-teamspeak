@@ -27,11 +27,15 @@ RUN	set -x \
     	&& rm /etc/apk/keys/sgerrand.rsa.pub /root/.wget-hsts
 ENV 	LANG=C.UTF-8
 
-RUN 	addgroup -S $TS_USER \
-    	&& adduser -S \
-    		-G $TS_USER \
-    		-D \
-    		$TS_USER
+RUN     addgroup -S \
+		-g 503 \
+           	$TS_USER \
+        && adduser -S \
+            	-u 503 \
+            	-G $TS_USER \
+            	-D \
+		$TS_USER
+
 
 WORKDIR	${TS_HOME}
 
