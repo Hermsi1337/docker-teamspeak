@@ -25,7 +25,7 @@ I'd recommend to use docker-compose (see next paragraph). If you don't like dock
      hermsi/teamspeak
    ```
 ### Using external database
-   1. Create all needed directories and set correct permissions
+1. Create all needed directories and set correct permissions
    ```bash
    export TS_VOLUME="/var/storage/docker/volumes/teamspeak" \
    && mkdir -p "${TS_VOLUME}/data" \
@@ -60,7 +60,7 @@ I'd recommend to use docker-compose (see next paragraph). If you don't like dock
    ```
 ## More professional way (docker-compose with local-persist driver):
 To make your storage persisent using the latest v3 of docker-compose, I really recommend to use local-persist as follows.
-   1. Install the local-persist driver. [See here for reference](https://github.com/CWSpear/local-persist).
+1. Install the local-persist driver. [See here for reference](https://github.com/CWSpear/local-persist).
    ```bash
    curl -fsSL https://raw.githubusercontent.com/CWSpear/local-persist/master/scripts/install.sh | sudo bash
    ```
