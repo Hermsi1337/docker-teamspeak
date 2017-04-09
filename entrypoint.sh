@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set Configuration for Teamspeak in ts3server.ini
 # The following Lines will set the ts3server.ini
@@ -37,6 +37,12 @@ dbpluginparameter=ts3db_mariadb.ini
 dbsqlpath=sql/
 dbsqlcreatepath=create_mariadb
 EOF
+
+# Wait until database is ready
+WAIT_FOR_IT="/tmp/wait-for-it.sh"
+wget -q -O ${WAIT_FOR_IT} "https://raw.githubusercontent.com/Hermsi1337/wait-for-it/master/wait-for-it.sh" \
+&& chmod +x ${WAIT_FOR_IT} \
+&& bash ${WAIT_FOR_IT} "${TS3_MARIADB_HOST}":"${TS3_MARIADB_PORT}" -t 40; rm -f ${WAIT_FOR_IT}
 
 # Begin ts3db_mariadb.ini
 # This writes the database settings for MariaDB
