@@ -1,7 +1,7 @@
-FROM  alpine:latest
+FROM	alpine:latest
 
-ENV   TS_USER=teamspeak \
-      TS_HOME=/teamspeak
+ENV	TS_USER=teamspeak \
+	TS_HOME=/teamspeak
 
 # Get some stuff in order to work properly
 RUN	set -x \
