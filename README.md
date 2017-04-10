@@ -57,7 +57,7 @@ I'd recommend to use docker-compose (see next paragraph). If you don't like dock
    ```bash
    docker run -d --restart=always --name teamspeak --net my_teamspeak \
      -p 9987:9987/udp -p 30033:30033 -p 10011:10011 \
-     -v ${TS_VOLUME}/data:/teamspeak \
+     -v ${TS_VOLUME}/teamspeak:/teamspeak \
      -e TS3_MARIADB_DB=teamspeak \
      -e TS3_MARIADB_USER=teamspeak \
      -e TS3_MARIADB_PASS=CHANGEME \
