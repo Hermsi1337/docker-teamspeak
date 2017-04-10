@@ -122,7 +122,7 @@ To make your storage persisent using the latest v3 of docker-compose, I really r
          - 10011:10011
    ```
    
-3. Create your related .env-file. Feel free to use [this boilerplate](.env_)
+3. Create your related .env-file. Feel free to use [this boilerplate](https://github.com/Hermsi1337/docker-teamspeak/blob/master/.env_)
 
    ```bash
    # Docker-Compose
