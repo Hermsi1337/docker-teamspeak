@@ -36,9 +36,8 @@ I'd recommend to use docker-compose (see next paragraph). If you don't like dock
 1. Create all needed directories and set correct permissions
    ```bash
    export TS_VOLUME="/var/storage/docker/volumes/teamspeak" \
-   && mkdir -p "${TS_VOLUME}/data" \
-   && mkdir -p "${TS_VOLUME}/mysql" \
-   && chown -R 503:503 ${TS_VOLUME}
+   && mkdir -p "${TS_VOLUME}/teamspeak" \
+   && mkdir -p "${TS_VOLUME}/mysql"
    ```
 2. Create a network for your teamspeak3 and mariadb container
    ```bash
