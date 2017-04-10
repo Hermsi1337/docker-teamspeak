@@ -1,16 +1,22 @@
 # TeamSpeak3 dockerized
+
 An image to run a TeamSpeak3 server in a docker container based on alpine. It's also possible to connect an external database.
 This dockerfile will always pull the latest available version of TeamSpeak3. ([Thank you mbentley](https://github.com/mbentley/docker-teamspeak))
 
 ## Fast and easy way (no persisent storage):
+
 That is how to run the container without a persisent storage. I only recommend this way for testing:
+
 ```bash
 docker run -d --name teamspeak -p 9987:9987/udp -p 30033:30033 -p 10011:10011 hermsi/teamspeak
 ```
 
 ## Professional way (persisent storage):
+
 I'd recommend to use docker-compose (see next paragraph). If you don't like docker-compose but you want to keep your data when restarting the container, run it as follows:
+
 ### Without external database
+
 1. Create all needed directories and set correct permissions
    ```bash
    export TS_VOLUME="/var/storage/docker/volumes/teamspeak" \
@@ -24,7 +30,9 @@ I'd recommend to use docker-compose (see next paragraph). If you don't like dock
      -v ${TS_VOLUME}:/teamspeak \
      hermsi/teamspeak
    ```
+   
 ### Using external database
+
 1. Create all needed directories and set correct permissions
    ```bash
    export TS_VOLUME="/var/storage/docker/volumes/teamspeak" \
@@ -58,13 +66,19 @@ I'd recommend to use docker-compose (see next paragraph). If you don't like dock
      -e TS3_MARIADB_PORT=3306 \
      hermsi/teamspeak
    ```
+   
 ## More professional way (docker-compose with local-persist driver):
+
 To make your storage persisent using the latest v3 of docker-compose, I really recommend to use local-persist as follows.
+
 1. Install the local-persist driver. [See here for reference](https://github.com/CWSpear/local-persist).
+
    ```bash
    curl -fsSL https://raw.githubusercontent.com/CWSpear/local-persist/master/scripts/install.sh | sudo bash
    ```
+   
 2. Create docker-compose.yml file. See also [here](https://github.com/Hermsi1337/docker-teamspeak/blob/master/docker-compose.yml).
+
    ```yml
    version: '3'
 
@@ -107,7 +121,9 @@ To make your storage persisent using the latest v3 of docker-compose, I really r
          - 30033:30033 
          - 10011:10011
    ```
+   
 3. Create your related .env-file. Feel free to use [this boilerplate](.env_)
+
    ```bash
    # Docker-Compose
    ## project-name
@@ -125,7 +141,9 @@ To make your storage persisent using the latest v3 of docker-compose, I really r
    ## User Password
    MYSQL_PASSWORD=CHANGEME
    ```
+   
 4. Run your server using docker-compose
+
    ```bash
    docker-compose up -d
    ```
