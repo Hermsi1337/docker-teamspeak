@@ -23,7 +23,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
   application:
-    image: hermsi/teamspeak
+    image: hermsi/alpine-teamspeak
     depends_on:
       - database
     environment:
