@@ -1,6 +1,6 @@
-FROM hermsi/alpine-glibc
+FROM    hermsi/alpine-glibc
 
-LABEL maintainer "https://github.com/hermsi1337"
+LABEL   maintainer "https://github.com/hermsi1337"
 
 ENV	TS_USER=teamspeak \
 	TS_HOME=/teamspeak
