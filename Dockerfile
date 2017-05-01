@@ -1,4 +1,4 @@
-FROM	alpine:latest
+FROM hermsi/alpine-glibc
 
 ENV	TS_USER=teamspeak \
 	TS_HOME=/teamspeak
@@ -14,19 +14,6 @@ RUN	set -x \
 RUN	set -x \
 	&& apk --no-cache add su-exec
 
-# Install the GNU C library and set locales
-ENV	GLIBC_VERSION=2.25-r0
-RUN	set -x \
-	&& wget -q -O /etc/apk/keys/sgerrand.rsa.pub "https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub" \
-	&& wget -q "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk" \
-	&& wget -q "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk" \
-	&& wget -q "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk" \
-	&& apk --no-cache add glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk glibc-i18n-${GLIBC_VERSION}.apk \
-    	&& /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true \
-    	&& echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
-    	&& rm /etc/apk/keys/sgerrand.rsa.pub /root/.wget-hsts
-ENV 	LANG=C.UTF-8
-
 RUN     addgroup -S \
 		-g 503 \
            	$TS_USER \
@@ -35,7 +22,6 @@ RUN     addgroup -S \
             	-G $TS_USER \
             	-D \
 		$TS_USER
-
 
 WORKDIR	${TS_HOME}
 
