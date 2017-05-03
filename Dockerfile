@@ -12,10 +12,6 @@ RUN	set -x \
     	&& update-ca-certificates \
     	&& apk --no-cache --virtual .build-dependencies add w3m bzip2
 
-# Install su-exec for easy step-down from root
-RUN	set -x \
-	&& apk --no-cache add su-exec
-
 RUN     addgroup -S \
 		-g 503 \
            	$TS_USER \
