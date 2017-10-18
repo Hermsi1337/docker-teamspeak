@@ -1,9 +1,9 @@
-# TeamSpeak3 dockerized
+## TeamSpeak3 dockerized
 
 An image to run a TeamSpeak3 server in a docker container based on alpine. It's also possible to connect an external database.
 This dockerfile will always pull the latest available version of TeamSpeak3. ([Thank you mbentley](https://github.com/mbentley/docker-teamspeak))
 
-## Fast and easy way (no persisent storage):
+### Fast and easy way (no persisent storage):
 
 That is how to run the container without a persisent storage. I only recommend this way for testing:
 
@@ -11,11 +11,11 @@ That is how to run the container without a persisent storage. I only recommend t
 docker run -d --name teamspeak -p 9987:9987/udp -p 30033:30033 -p 10011:10011 hermsi/teamspeak
 ```
 
-## Professional way (persisent storage):
+### Professional way (persisent storage):
 
 I'd recommend to use docker-compose (see next paragraph). If you don't like docker-compose but you want to keep your data when restarting the container, run it as follows:
 
-### Without external database
+#### Without external database
 
 1. Create all needed directories and set correct permissions
    ```bash
@@ -31,7 +31,7 @@ I'd recommend to use docker-compose (see next paragraph). If you don't like dock
      hermsi/teamspeak
    ```
    
-### Using external database
+#### Using external database
 
 1. Create all needed directories and set correct permissions
    ```bash
@@ -66,7 +66,7 @@ I'd recommend to use docker-compose (see next paragraph). If you don't like dock
      hermsi/teamspeak
    ```
    
-## More professional way (docker-compose with local-persist driver):
+### More professional way (docker-compose with local-persist driver):
 
 To make your storage persisent using the latest v3 of docker-compose, I really recommend to use local-persist as follows.
 
