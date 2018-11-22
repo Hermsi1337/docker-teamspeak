@@ -42,4 +42,6 @@ USER		${TS_USER}
 
 EXPOSE 		9987/udp 10011 30033
 
+VOLUME 		["${TS_HOME}"]
+
 ENTRYPOINT	["/entrypoint.sh"]
