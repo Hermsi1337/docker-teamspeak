@@ -2,7 +2,7 @@ FROM    	hermsi/alpine-glibc
 
 LABEL   	maintainer "https://github.com/hermsi1337"
 
-ARG			TS_SERVER_VER="3.2.3"
+ARG			TS_SERVER_VER="3.5.0"
 ENV			TS_SERVER_VER="${TS_SERVER_VER}" \
 			TS_USER="teamspeak" \
 			TS_HOME="/teamspeak" \
