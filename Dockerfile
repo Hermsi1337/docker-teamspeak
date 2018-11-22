@@ -1,50 +1,45 @@
-FROM    hermsi/alpine-glibc
+FROM    	hermsi/alpine-glibc
 
-LABEL   maintainer "https://github.com/hermsi1337"
+LABEL   	maintainer "https://github.com/hermsi1337"
 
-ENV	TS_USER=teamspeak \
-	TS_HOME=/teamspeak
+ARG			TS_SERVER_VER="3.2.3"
+ENV			TS_SERVER_VER="${TS_SERVER_VER}" \
+			TS_USER="teamspeak" \
+			TS_HOME="/teamspeak" \
+			TS3_MARIADB_PORT="3306" \
+			DEFAULT_VOICE_PORT="9987" \
+			FILE_TRANSFER_PORT="30033" \
+			QUERY_PORT="10011"
 
-# Get some stuff in order to work properly
-RUN	set -x \
-    	&& apk update \
-    	&& apk --no-cache add ca-certificates wget openssl bash \
-    	&& update-ca-certificates \
-    	&& apk --no-cache --virtual .build-dependencies add w3m bzip2
+ADD			entrypoint.sh /entrypoint.sh
+WORKDIR		${TS_HOME}
 
-RUN     addgroup -S \
-		-g 503 \
-           	$TS_USER \
-        && adduser -S \
-            	-u 503 \
-            	-G $TS_USER \
-            	-D \
-		$TS_USER
+RUN			set -x \
+    		&& apk update \
+			&& apk upgrade \
+    		&& apk add ca-certificates wget openssl bash mysql-client \
+    		&& update-ca-certificates \
+    		&& apk --virtual .build-dependencies add w3m bzip2 \
+			&& addgroup -S \
+					-g 503 \
+    		   		$TS_USER \
+    		&& adduser -S \
+    		       	-u 503 \
+    		       	-G $TS_USER \
+    		       	-D \
+					$TS_USER \
+			&& wget http://dl.4players.de/ts/releases/${TS_SERVER_VER}/teamspeak3-server_linux_amd64-${TS_SERVER_VER}.tar.bz2 -O /tmp/teamspeak.tar.bz2 \
+  			&& tar jxf /tmp/teamspeak.tar.bz2 -C /tmp \
+  			&& mv /tmp/teamspeak3-server_*/* ${TS_HOME} \
+    		&& rm /tmp/teamspeak.tar.bz2 \
+    		&& apk del .build-dependencies \
+    		&& rm -rf /tmp/* \
+			&& cp "$(pwd)/redist/libmariadb.so.2" $(pwd) \
+			&& chown -R ${TS_USER}:${TS_USER} ${TS_HOME} \
+			&& chmod +x /entrypoint.sh
 
-WORKDIR	${TS_HOME}
+USER		${TS_USER}
 
-# Get teamspeak package
-RUN	TS_SERVER_VER="$(w3m -dump https://www.teamspeak.com/downloads | grep -m 1 'Server 64-bit ' | awk '{print $NF}')" \
-	&& wget http://dl.4players.de/ts/releases/${TS_SERVER_VER}/teamspeak3-server_linux_amd64-${TS_SERVER_VER}.tar.bz2 -O /tmp/teamspeak.tar.bz2 \
-  	&& tar jxf /tmp/teamspeak.tar.bz2 -C /tmp \
-  	&& mv /tmp/teamspeak3-server_*/* ${TS_HOME}
+EXPOSE 		9987/udp 10011 30033
 
-# Clean up
-RUN	set -x \
-    	&& rm /tmp/teamspeak.tar.bz2 \
-    	&& apk del .build-dependencies \
-    	&& rm -rf /tmp/*
-
-RUN 	cp "$(pwd)/redist/libmariadb.so.2" $(pwd)
-
-ADD 	entrypoint.sh ${TS_HOME}/entrypoint.sh
-
-RUN 	chown -R ${TS_USER}:${TS_USER} ${TS_HOME} && chmod +x entrypoint.sh
-
-USER  	${TS_USER}
-
-EXPOSE 	9987/udp
-EXPOSE 	10011
-EXPOSE 	30033
-
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT	["/entrypoint.sh"]

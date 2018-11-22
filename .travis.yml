@@ -1,0 +1,35 @@
+sudo: required
+
+language: bash
+
+addons:
+  apt:
+    packages:
+      - docker-ce
+
+env:
+  global:
+    - IMAGE="alpine-teamspeak"
+    - IMAGE_NAME="${DOCKER_USER}/${IMAGE}"
+
+before_script:
+  - sudo sysctl -w net.ipv4.ip_forward=1 
+  - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASSWORD}"
+  - apt install w3m
+  - export TS_SERVER_VER="$(w3m -dump https://www.teamspeak.com/downloads | grep -m 1 'Server 64-bit ' | awk '{print $NF}')"
+
+script: |
+  find . -name "*.sh" -print0 | xargs -0 -r -n1 bash -n
+  docker build \
+            --quiet \
+            --no-cache \
+            --pull \
+            --build-arg TS_SERVER_VER="${TS_SERVER_VER}" \
+            --tag "${IMAGE_NAME}:${TS_SERVER_VER}" \
+            --tag "${IMAGE_NAME}:latest" \
+            --file "${TRAVIS_BUILD_DIR}/Dockerfile" \
+            "${TRAVIS_BUILD_DIR}"
+  if [[ "${TRAVIS_BRANCH}" == "master" ]] && [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then 
+    docker push "${IMAGE_NAME}:${TS_SERVER_VER}"
+    docker push "${IMAGE_NAME}:latest"
+  fi

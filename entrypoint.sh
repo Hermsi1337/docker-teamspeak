@@ -6,12 +6,12 @@
 cat > ts3server.ini <<EOF
 logquerycommands=${LOG_QUERY_COMMANDS:-0}
 machine_id=${MACHINE_ID:-}
-default_voice_port=${DEFAULT_VOICE_PORT:-9987}
+default_voice_port=${DEFAULT_VOICE_PORT}
 voice_ip=${VOICE_IP:-0.0.0.0}
-licensepath=${TS3_LICENSE_PATH:-}
-filetransfer_port=${FILE_TRANSFER_PORT:-30033}
+licensepath=${TS3_LICENSE_PATH}
+filetransfer_port=${FILE_TRANSFER_PORT}
 filetransfer_ip=${FILE_TRANSFER_IP:-0.0.0.0}
-query_port=${QUERY_PORT:-10011}
+query_port=${QUERY_PORT}
 query_ip=${QUERY_IP:-0.0.0.0}
 query_ip_whitelist=${QUERY_IP_WHITELIST:-query_ip_whitelist.txt}
 query_ip_blacklist=${QUERY_IP_BLACKLIST:-query_ip_blacklist.txt}
@@ -19,17 +19,7 @@ EOF
 
 # This checks if it should run with an external MariaDB
 # or SQL_LITE
-if [[ -z "${TS3_MARIADB_DB}" ]]; then
-
-cat <<EOF >> ts3server.ini
-dbplugin=ts3db_sqlite3
-dbpluginparameter=
-dbsqlpath=sql/
-dbsqlcreatepath=create_sqlite/
-dbconnections=10
-EOF
-
-else
+if [[ -n "${TS3_MARIADB_DB}" ]] && [[ -n "${TS3_MARIADB_HOST}" ]] && [[ -n "${TS3_MARIADB_USER}" ]] && [[ -n "${TS3_MARIADB_PASS}" ]]; then
 
 cat <<EOF >> ts3server.ini
 dbplugin=ts3db_mariadb
@@ -39,23 +29,38 @@ dbsqlcreatepath=create_mariadb
 EOF
 
 # Wait until database is ready
-WAIT_FOR_IT="/tmp/wait-for-it.sh"
-wget -q -O ${WAIT_FOR_IT} "https://raw.githubusercontent.com/Hermsi1337/wait-for-it/master/wait-for-it.sh" \
-&& chmod +x ${WAIT_FOR_IT} \
-&& bash ${WAIT_FOR_IT} "${TS3_MARIADB_HOST}":"${TS3_MARIADB_PORT}" -t 40; rm -f ${WAIT_FOR_IT}
+until mysql \
+        -h "${TS3_MARIADB_HOST}" \
+        -u "${TS3_MARIADB_USER}" \
+        -p "${TS3_MARIADB_PASS}" \
+        -P "${TS3_MARIADB_PORT}" \
+        -d "${TS3_MARIADB_DB}" ; \
+do sleep 1 ; \
+done
 
 # Begin ts3db_mariadb.ini
 # This writes the database settings for MariaDB
 cat > ts3db_mariadb.ini <<EOF
 [config]
-host=$TS3_MARIADB_HOST
-port=$TS3_MARIADB_PORT
-username=$TS3_MARIADB_USER
-password=$TS3_MARIADB_PASS
-database=$TS3_MARIADB_DB
+host=${TS3_MARIADB_HOST}
+port=${TS3_MARIADB_PORT}
+username=${TS3_MARIADB_USER}
+password=${TS3_MARIADB_PASS}
+database=${TS3_MARIADB_DB}
 socket=
 EOF
 # end ts3db_mariadb.ini
+
+else
+
+cat <<EOF >> ts3server.ini
+dbplugin=ts3db_sqlite3
+dbpluginparameter=
+dbsqlpath=sql/
+dbsqlcreatepath=create_sqlite/
+dbconnections=10
+EOF
+
 fi
 
 cat >> ts3server.ini <<EOF
