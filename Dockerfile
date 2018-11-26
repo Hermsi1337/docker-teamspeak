@@ -1,4 +1,4 @@
-FROM    	hermsi/alpine-glibc
+FROM    	alpine:latest
 
 LABEL   	maintainer "https://github.com/hermsi1337"
 
