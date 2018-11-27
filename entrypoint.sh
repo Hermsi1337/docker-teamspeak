@@ -34,7 +34,7 @@ until mysql \
         -u "${TS3_MARIADB_USER}" \
         -p "${TS3_MARIADB_PASS}" \
         -P "${TS3_MARIADB_PORT}" \
-        -d "${TS3_MARIADB_DB}" ; \
+        -D "${TS3_MARIADB_DB}" ; \
 do sleep 1 ; \
 done
 
