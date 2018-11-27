@@ -1,4 +1,4 @@
-FROM    	alpine:latest
+FROM    	frolvlad/alpine-glibc:alpine-3.8
 
 LABEL   	maintainer "https://github.com/hermsi1337"
 
