@@ -28,17 +28,6 @@ dbsqlpath=sql/
 dbsqlcreatepath=create_mariadb
 EOF
 
-# Wait until database is ready
-until mysql \
-        -h "${TS3_MARIADB_HOST}" \
-        -u "${TS3_MARIADB_USER}" \
-        -p "${TS3_MARIADB_PASS}" \
-        -P "${TS3_MARIADB_PORT}" \
-        -D "${TS3_MARIADB_DB}" \
-        -e "show tables;"; \
-do sleep 1 ; \
-done
-
 # Begin ts3db_mariadb.ini
 # This writes the database settings for MariaDB
 cat > ts3db_mariadb.ini <<EOF
