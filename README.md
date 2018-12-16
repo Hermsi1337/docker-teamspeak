@@ -1,7 +1,10 @@
 ## TeamSpeak3 dockerized
 
 An image to run a TeamSpeak3 server in a docker container based on alpine. It's also possible to connect an external database.
-This dockerfile will always pull the latest available version of TeamSpeak3. ([Thank you mbentley](https://github.com/mbentley/docker-teamspeak))
+
+## Regular builds, automagically
+[![Build Status](https://travis-ci.org/Hermsi1337/docker-teamspeak.svg?branch=master)](https://travis-ci.org/Hermsi1337/docker-teamspeak)   
+Thanks to [Travis-CI](https://travis-ci.org/) this image is pushed weekly and creates new [tags](https://hub.docker.com/r/hermsi/alpine-teamspeak/tags/) if there are new versions available.
 
 ### Fast and easy way (no persisent storage):
 
