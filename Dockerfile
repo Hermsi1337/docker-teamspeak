@@ -29,7 +29,7 @@ RUN			set -x \
     		       	-G $TS_USER \
     		       	-D \
 					$TS_USER \
-			&& wget http://dl.4players.de/ts/releases/${TS_SERVER_VER}/teamspeak3-server_linux_amd64-${TS_SERVER_VER}.tar.bz2 -O /tmp/teamspeak.tar.bz2 \
+			&& wget https://files.teamspeak-services.com/releases/server/${TS_SERVER_VER}/teamspeak3-server_linux_amd64-${TS_SERVER_VER}.tar.bz2 -O /tmp/teamspeak.tar.bz2 \
   			&& tar jxf /tmp/teamspeak.tar.bz2 -C /tmp \
   			&& mv /tmp/teamspeak3-server_*/* ${TS_HOME} \
     		&& rm /tmp/teamspeak.tar.bz2 \
